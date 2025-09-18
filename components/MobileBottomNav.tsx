@@ -1,0 +1,40 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { UsersIcon, CheckBadgeIcon, AcademicCapIcon } from './Icons'; // Assuming Icons for dashboard, mentor match, profile
+
+const MobileBottomNav: React.FC = () => {
+    const { isAuthenticated } = useAuth();
+
+    if (!isAuthenticated) {
+        return null;
+    }
+
+    const navItems = [
+        { path: '/dashboard', label: 'Dashboard', icon: <AcademicCapIcon className="w-6 h-6 mx-auto mb-1" /> },
+        { path: '/mentor-match', label: 'Mentors', icon: <UsersIcon className="w-6 h-6 mx-auto mb-1" /> },
+        { path: '/profile', label: 'Profile', icon: <CheckBadgeIcon className="w-6 h-6 mx-auto mb-1" /> },
+    ];
+
+    const navLinkClasses = "flex-1 text-center text-neutral-600 dark:text-neutral-400 font-medium text-xs py-2";
+    const activeNavLinkClasses = "text-primary dark:text-secondary";
+
+    return (
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-lg border-t border-neutral-200 dark:border-neutral-800 shadow-t-md z-40">
+            <div className="flex justify-around items-center h-16">
+                {navItems.map(item => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) => `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`}
+                    >
+                        {item.icon}
+                        {item.label}
+                    </NavLink>
+                ))}
+            </div>
+        </nav>
+    );
+};
+
+export default MobileBottomNav;

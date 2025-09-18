@@ -1,4 +1,3 @@
-
 const conversationStarters = [
     "What's one skill you're hoping to develop in the next year?",
     "Can you share a story about a challenge you overcame in your career?",
@@ -24,3 +23,13 @@ export const generateActionItems = (): string[] => {
         "Complete one LeetCode medium problem per day for the next two weeks.",
     ];
 };
+
+export const generateAIChatResponse = (): string => {
+    const responses = [
+        "I can help with that. Are you looking for interview tips or resume advice?",
+        "Here are 3 conversation starters for your next session: 1. What's a book that changed your perspective? 2. What's the best career advice you've ignored? 3. How do you stay motivated during challenging projects?",
+        "To find a mentor, I suggest filtering by your major and a desired industry. For example, 'Data Science' in the 'Finance' sector."
+    ];
+    const randomIndex = Math.floor(Math.random() * responses.length);
+    return responses[randomIndex];
+}
