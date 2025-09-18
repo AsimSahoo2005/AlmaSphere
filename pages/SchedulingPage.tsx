@@ -1,0 +1,99 @@
+
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DUMMY_MENTORS } from '../types';
+import Button from '../components/ui/Button';
+import Card from '../components/ui/Card';
+
+const SchedulingPage: React.FC = () => {
+    const { mentorId } = useParams<{ mentorId: string }>();
+    const navigate = useNavigate();
+    const mentor = DUMMY_MENTORS.find(m => m.id === mentorId);
+
+    const [duration, setDuration] = useState<15 | 30 | 60>(30);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    const [selectedTime, setSelectedTime] = useState<string | null>('10:00 AM');
+
+    if (!mentor) {
+        return <div className="text-center py-20">Mentor not found.</div>;
+    }
+
+    const handleBooking = () => {
+        // Here you would typically call an API to finalize the booking.
+        // For this demo, we just show an alert and navigate away.
+        alert(`Session with ${mentor.name} for ${duration} minutes on ${selectedDate?.toDateString()} at ${selectedTime} has been requested!`);
+        navigate('/dashboard');
+    };
+    
+    const timeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM', '04:00 PM'];
+    
+    // Simple calendar logic for demo
+    const today = new Date();
+    const dates = Array.from({length: 7}, (_, i) => {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        return d;
+    });
+
+    return (
+        <div className="bg-neutral-100">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                 <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-8">
+                        <img src={mentor.avatarUrl} alt={mentor.name} className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white shadow-lg"/>
+                        <h1 className="text-3xl font-bold text-neutral-900">Schedule a session with {mentor.name}</h1>
+                        <p className="text-lg text-neutral-600">{mentor.title} at {mentor.company}</p>
+                    </div>
+
+                    <Card className="p-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {/* Step 1: Duration */}
+                            <div>
+                                <h3 className="font-semibold text-lg mb-4">1. Select Duration</h3>
+                                <div className="space-y-2">
+                                    {[15, 30, 60].map(d => (
+                                        <button key={d} onClick={() => setDuration(d as 15 | 30 | 60)} className={`w-full text-left p-3 rounded-md border-2 ${duration === d ? 'border-primary bg-primary-light' : 'border-neutral-200'}`}>
+                                            {d} minutes
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* Step 2: Date & Time */}
+                            <div className="md:col-span-2">
+                                <h3 className="font-semibold text-lg mb-4">2. Pick a Date & Time</h3>
+                                <div className="mb-4">
+                                     <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                                        {dates.map(date => (
+                                            <button key={date.toString()} onClick={() => setSelectedDate(date)} className={`p-2 rounded-md ${selectedDate?.toDateString() === date.toDateString() ? 'bg-primary text-white' : 'bg-neutral-100 hover:bg-neutral-200'}`}>
+                                                <div className="text-xs">{date.toLocaleDateString('en-US', { weekday: 'short' })}</div>
+                                                <div className="font-bold">{date.getDate()}</div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {timeSlots.map(time => (
+                                        <button key={time} onClick={() => setSelectedTime(time)} className={`p-3 rounded-md border-2 ${selectedTime === time ? 'border-primary bg-primary-light' : 'border-neutral-200'}`}>
+                                            {time}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Confirmation */}
+                        <div className="mt-8 pt-6 border-t">
+                            <h3 className="font-semibold text-lg mb-2">Your Selection</h3>
+                            <p className="text-neutral-700">You are booking a <span className="font-bold text-primary">{duration}-minute</span> session with <span className="font-bold">{mentor.name}</span> on <span className="font-bold">{selectedDate?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span> at <span className="font-bold">{selectedTime}</span>.</p>
+                            <div className="mt-6 text-right">
+                                <Button size="lg" onClick={handleBooking}>Confirm Booking</Button>
+                            </div>
+                        </div>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default SchedulingPage;
