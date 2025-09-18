@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { DUMMY_MENTORS, Mentor } from '../types';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
@@ -8,7 +9,7 @@ import { CheckBadgeIcon, BriefcaseIcon, AcademicCapIcon, SparklesIcon, ShieldChe
 import { suggestMentorSearchQuery } from '../services/geminiService';
 
 const MentorProfileCard: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
-    const navigate = useNavigate();
+    const navigate = ReactRouterDOM.useNavigate();
 
     return (
         <Card className="flex flex-col" onClick={() => navigate(`/schedule/${mentor.id}`)}>

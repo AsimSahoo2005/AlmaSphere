@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { DUMMY_MENTORS } from '../types';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 
 const SchedulingPage: React.FC = () => {
-    const { mentorId } = useParams<{ mentorId: string }>();
-    const navigate = useNavigate();
+    const { mentorId } = ReactRouterDOM.useParams<{ mentorId: string }>();
+    const navigate = ReactRouterDOM.useNavigate();
     const mentor = DUMMY_MENTORS.find(m => m.id === mentorId);
 
     const [duration, setDuration] = useState<15 | 30 | 60>(30);

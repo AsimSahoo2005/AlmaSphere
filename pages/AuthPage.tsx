@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Role } from '../types';
 import Button from '../components/ui/Button';
@@ -9,7 +10,7 @@ import { AcademicCapIcon, LinkedInIcon } from '../components/Icons';
 const AuthPage: React.FC = () => {
     const [isLogin, setIsLogin] = useState(true);
     const { login } = useAuth();
-    const navigate = useNavigate();
+    const navigate = ReactRouterDOM.useNavigate();
 
     const handleAuth = (role: Role) => {
         login(role);
@@ -86,7 +87,6 @@ const AuthPage: React.FC = () => {
                         <div className="flex justify-center gap-2 mt-2">
                              <button onClick={() => handleAuth(Role.STUDENT)} className="underline">As Student</button>
                             <button onClick={() => handleAuth(Role.ALUMNI)} className="underline">As Alumni</button>
-                            <button onClick={() => handleAuth(Role.ADMIN)} className="underline">As Admin</button>
                         </div>
                     </div>
                 </div>

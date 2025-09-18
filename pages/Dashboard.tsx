@@ -6,7 +6,8 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { CheckBadgeIcon, ShieldCheckIcon, SparklesIcon } from '../components/Icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Link } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 
 const data = [
   { name: 'Jan', Students: 40, Alumni: 24, Sessions: 24 },
@@ -56,7 +57,7 @@ const StudentDashboard: React.FC = () => {
                                     {session.status}
                                 </span>
                             </Card>
-                        )) : <p className="text-neutral-600 dark:text-neutral-400">You have no upcoming sessions. <Link to="/mentor-match" className="text-primary font-semibold">Find a mentor</Link> to get started!</p>}
+                        )) : <p className="text-neutral-600 dark:text-neutral-400">You have no upcoming sessions. <ReactRouterDOM.Link to="/mentor-match" className="text-primary font-semibold">Find a mentor</ReactRouterDOM.Link> to get started!</p>}
                     </div>
                 </div>
             </div>

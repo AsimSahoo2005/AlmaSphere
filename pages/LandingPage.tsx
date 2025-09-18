@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { UsersIcon, SparklesIcon, DocumentTextIcon, ArrowRightIcon } from '../components/Icons';
@@ -36,12 +37,12 @@ const LandingPage: React.FC = () => {
                         Unlock your potential with personalized micro-mentorship from your university's most valuable resource: its alumni.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <Link to="/login">
+                        <ReactRouterDOM.Link to="/login">
                              <Button size="lg" variant="primary">Join as Student <ArrowRightIcon /></Button>
-                        </Link>
-                         <Link to="/login">
+                        </ReactRouterDOM.Link>
+                         <ReactRouterDOM.Link to="/login">
                             <Button size="lg" variant="ghost">Join as Alumni</Button>
-                        </Link>
+                        </ReactRouterDOM.Link>
                     </div>
                 </div>
             </section>

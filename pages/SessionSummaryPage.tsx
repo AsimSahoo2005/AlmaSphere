@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import Card from '../components/ui/Card';
 import { DocumentTextIcon } from '../components/Icons';
 import { summarizeTranscript, generateActionItems } from '../services/aiService';
 
 const SessionSummaryPage: React.FC = () => {
-    const { sessionId } = useParams<{ sessionId: string }>();
+    const { sessionId } = ReactRouterDOM.useParams<{ sessionId: string }>();
     const [summary, setSummary] = useState('');
     const [actionItems, setActionItems] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);

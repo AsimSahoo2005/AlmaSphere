@@ -1,5 +1,6 @@
 import React from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
@@ -16,23 +17,23 @@ import AIChatWidget from './components/AIChatWidget';
 import MobileBottomNav from './components/MobileBottomNav';
 
 const AppContent: React.FC = () => {
-    const location = useLocation();
+    const location = ReactRouterDOM.useLocation();
     const isAuthPage = location.pathname === '/login';
 
     return (
         <div className="bg-neutral-50 dark:bg-neutral-900 min-h-screen flex flex-col font-sans text-neutral-800 dark:text-neutral-200">
             {!isAuthPage && <Navbar />}
             <main className="flex-grow pb-16 md:pb-0">
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/login" element={<AuthPage />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/mentor-match" element={<MentorMatchPage />} />
-                    <Route path="/schedule/:mentorId" element={<SchedulingPage />} />
-                    <Route path="/session/:sessionId" element={<SessionRoom />} />
-                    <Route path="/summary/:sessionId" element={<SessionSummaryPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                </Routes>
+                <ReactRouterDOM.Routes>
+                    <ReactRouterDOM.Route path="/" element={<LandingPage />} />
+                    <ReactRouterDOM.Route path="/login" element={<AuthPage />} />
+                    <ReactRouterDOM.Route path="/dashboard" element={<Dashboard />} />
+                    <ReactRouterDOM.Route path="/mentor-match" element={<MentorMatchPage />} />
+                    <ReactRouterDOM.Route path="/schedule/:mentorId" element={<SchedulingPage />} />
+                    <ReactRouterDOM.Route path="/session/:sessionId" element={<SessionRoom />} />
+                    <ReactRouterDOM.Route path="/summary/:sessionId" element={<SessionSummaryPage />} />
+                    <ReactRouterDOM.Route path="/profile" element={<ProfilePage />} />
+                </ReactRouterDOM.Routes>
             </main>
             {!isAuthPage && <Footer />}
             {!isAuthPage && <AIChatWidget />}
@@ -45,9 +46,9 @@ const App: React.FC = () => {
     return (
         <ThemeProvider>
             <AuthProvider>
-                <HashRouter>
+                <ReactRouterDOM.HashRouter>
                     <AppContent />
-                </HashRouter>
+                </ReactRouterDOM.HashRouter>
             </AuthProvider>
         </ThemeProvider>
     );

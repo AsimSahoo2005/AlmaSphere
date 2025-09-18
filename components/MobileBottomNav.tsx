@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UsersIcon, CheckBadgeIcon, AcademicCapIcon } from './Icons'; // Assuming Icons for dashboard, mentor match, profile
 
@@ -23,14 +24,14 @@ const MobileBottomNav: React.FC = () => {
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-lg border-t border-neutral-200 dark:border-neutral-800 shadow-t-md z-40">
             <div className="flex justify-around items-center h-16">
                 {navItems.map(item => (
-                    <NavLink
+                    <ReactRouterDOM.NavLink
                         key={item.path}
                         to={item.path}
                         className={({ isActive }) => `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''}`}
                     >
                         {item.icon}
                         {item.label}
-                    </NavLink>
+                    </ReactRouterDOM.NavLink>
                 ))}
             </div>
         </nav>

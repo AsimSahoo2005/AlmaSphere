@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { SparklesIcon, VideoCameraIcon } from '../components/Icons';
 import { generateConversationStarter } from '../services/aiService';
 
 const SessionRoom: React.FC = () => {
-    const { sessionId } = useParams<{ sessionId: string }>();
+    const { sessionId } = ReactRouterDOM.useParams<{ sessionId: string }>();
     const [starter, setStarter] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
 

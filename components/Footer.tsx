@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// FIX: Using namespace import for react-router-dom to address module resolution errors.
+import * as ReactRouterDOM from 'react-router-dom';
 import { AcademicCapIcon } from './Icons';
 
 const Footer: React.FC = () => {
@@ -8,18 +9,18 @@ const Footer: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="space-y-4">
-                         <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-primary">
+                         <ReactRouterDOM.Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-primary">
                             <AcademicCapIcon className="w-8 h-8"/>
                             <span>AlmaSphere</span>
-                        </Link>
+                        </ReactRouterDOM.Link>
                         <p className="text-neutral-600 dark:text-neutral-400 text-sm">AI-Powered Alumni-Student Networking for the next generation.</p>
                     </div>
                     <div>
                         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 tracking-wider uppercase">Platform</h3>
                         <ul className="mt-4 space-y-2">
-                            <li><Link to="/mentor-match" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Find a Mentor</Link></li>
-                            <li><Link to="/login" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Join as Alumni</Link></li>
-                            <li><Link to="/login" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Join as Student</Link></li>
+                            <li><ReactRouterDOM.Link to="/mentor-match" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Find a Mentor</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/login" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Join as Alumni</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/login" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Join as Student</ReactRouterDOM.Link></li>
                         </ul>
                     </div>
                      <div>
