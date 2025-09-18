@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // FIX: Using namespace import for react-router-dom to address module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
-import { DUMMY_MENTORS, Mentor } from '../types';
+import { DUMMY_MENTORS, Mentor, Role, User } from '../types';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -38,7 +38,7 @@ const MentorProfileCard: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
                 </div>
                  <div className="flex items-center">
                     <AcademicCapIcon className="w-4 h-4 mr-2" />
-                    <span>Graduated from <span className="font-semibold text-neutral-700 dark:text-neutral-300">{mentor.university}</span></span>
+                    <span>Graduated from <span className="font-semibold text-neutral-700 dark:text-neutral-300">{mentor.institution}</span></span>
                 </div>
             </div>
         </Card>
@@ -46,18 +46,51 @@ const MentorProfileCard: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
 };
 
 const MentorMatchPage: React.FC = () => {
-    const [mentors, setMentors] = useState<Mentor[]>(DUMMY_MENTORS);
+    const [allMentors, setAllMentors] = useState<Mentor[]>([]);
+    const [filteredMentors, setFilteredMentors] = useState<Mentor[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [domainFilter, setDomainFilter] = useState('');
     const [companyFilter, setCompanyFilter] = useState('');
     const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
 
+    const fetchMentors = () => {
+        try {
+            const usersJson = localStorage.getItem('almasphere_users');
+            if (usersJson) {
+                const users: User[] = JSON.parse(usersJson);
+                const alumni = users.filter(u => u.role === Role.ALUMNI) as Mentor[];
+                setAllMentors(alumni);
+            }
+        } catch (error) {
+            console.error("Failed to fetch mentors from localStorage", error);
+            setAllMentors(DUMMY_MENTORS); // Fallback to dummy data on error
+        }
+    };
+
     useEffect(() => {
-        let filtered = DUMMY_MENTORS;
+        fetchMentors();
+
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === 'almasphere_users') {
+                fetchMentors();
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
+    useEffect(() => {
+        let filtered = allMentors;
         if (searchTerm) {
+            const lowercasedTerm = searchTerm.toLowerCase();
             filtered = filtered.filter(m =>
-                m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                m.title.toLowerCase().includes(searchTerm.toLowerCase())
+                m.name.toLowerCase().includes(lowercasedTerm) ||
+                m.title.toLowerCase().includes(lowercasedTerm) ||
+                (m.skills && m.skills.some(s => s.toLowerCase().includes(lowercasedTerm)))
             );
         }
         if (domainFilter) {
@@ -66,11 +99,11 @@ const MentorMatchPage: React.FC = () => {
         if (companyFilter) {
             filtered = filtered.filter(m => m.company === companyFilter);
         }
-        setMentors(filtered);
-    }, [searchTerm, domainFilter, companyFilter]);
+        setFilteredMentors(filtered);
+    }, [searchTerm, domainFilter, companyFilter, allMentors]);
 
-    const domains = [...new Set(DUMMY_MENTORS.map(m => m.domain))];
-    const companies = [...new Set(DUMMY_MENTORS.map(m => m.company))];
+    const domains = [...new Set(allMentors.map(m => m.domain).filter(Boolean))];
+    const companies = [...new Set(allMentors.map(m => m.company).filter(Boolean))];
     
     const handleAiSuggestion = async () => {
         setIsLoadingSuggestion(true);
@@ -90,11 +123,11 @@ const MentorMatchPage: React.FC = () => {
                  <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 items-end px-4">
                     <div className="md:col-span-3">
                          <Input
-                            label="Search by name or title"
+                            label="Search by name, title, or skill"
                             id="search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="e.g., Jane Doe, Software Engineer..."
+                            placeholder="e.g., Jane Doe, Software Engineer, React..."
                          />
                     </div>
                     <div>
@@ -121,11 +154,11 @@ const MentorMatchPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {mentors.map(mentor => (
+                {filteredMentors.map(mentor => (
                     <MentorProfileCard key={mentor.id} mentor={mentor} />
                 ))}
             </div>
-             {mentors.length === 0 && (
+             {filteredMentors.length === 0 && (
                 <div className="text-center py-20 col-span-full">
                     <p className="text-neutral-600 dark:text-neutral-400">No mentors found matching your criteria.</p>
                 </div>

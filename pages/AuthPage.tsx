@@ -2,24 +2,36 @@ import React, { useState } from 'react';
 // FIX: Using namespace import for react-router-dom to address module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Role } from '../types';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { AcademicCapIcon, LinkedInIcon } from '../components/Icons';
 
 const AuthPage: React.FC = () => {
     const [isLogin, setIsLogin] = useState(true);
-    const { login } = useAuth();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login, signup, error, loading } = useAuth();
     const navigate = ReactRouterDOM.useNavigate();
 
-    const handleAuth = (role: Role) => {
-        login(role);
-        navigate('/dashboard');
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isLogin) {
+            const success = await login(email, password);
+            if (success) {
+                navigate('/dashboard');
+            }
+        } else {
+            const success = await signup(name, email, password);
+            if (success) {
+                navigate('/profile-setup');
+            }
+        }
     };
 
     return (
-        <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white dark:bg-neutral-800 p-10 rounded-xl shadow-lg">
+        <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-xl p-10 rounded-xl shadow-2xl border border-white/20">
                 <div>
                     <div className="mx-auto flex items-center justify-center h-12 w-auto text-primary">
                         <AcademicCapIcon className="h-10 w-10"/>
@@ -28,18 +40,19 @@ const AuthPage: React.FC = () => {
                         {isLogin ? 'Sign in to your account' : 'Create an account'}
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={(e) => e.preventDefault()}>
-                    <div className="rounded-md shadow-sm -space-y-px">
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    {error && <p className="text-red-500 text-center text-sm">{error}</p>}
+                    <div className="rounded-md shadow-sm space-y-3">
                         {!isLogin && (
                             <div>
-                                <Input id="name" name="name" type="text" required placeholder="Full Name" />
+                                <Input id="name" name="name" type="text" required placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} />
                             </div>
                         )}
                         <div>
-                             <Input id="email-address" name="email" type="email" required placeholder="Email address" />
+                             <Input id="email-address" name="email" type="email" required placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
                         </div>
                         <div>
-                           <Input id="password" name="password" type="password" required placeholder="Password" />
+                           <Input id="password" name="password" type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                         </div>
                     </div>
 
@@ -52,8 +65,8 @@ const AuthPage: React.FC = () => {
                     </div>
 
                     <div>
-                        <Button type="submit" className="w-full" onClick={() => handleAuth(Role.STUDENT)}>
-                            {isLogin ? 'Sign in' : 'Sign up'}
+                        <Button type="submit" className="w-full" disabled={loading}>
+                            {loading ? 'Processing...' : (isLogin ? 'Sign in' : 'Sign up')}
                         </Button>
                     </div>
                 </form>
@@ -61,7 +74,7 @@ const AuthPage: React.FC = () => {
                 <div className="text-center text-sm">
                     <p className="text-neutral-600 dark:text-neutral-400">
                         {isLogin ? "Don't have an account?" : 'Already have an account?'}
-                        <button onClick={() => setIsLogin(!isLogin)} className="font-medium text-primary hover:text-primary-hover ml-1">
+                        <button onClick={() => { setIsLogin(!isLogin); setEmail(''); setPassword(''); setName(''); }} className="font-medium text-primary hover:text-primary-hover ml-1">
                              {isLogin ? 'Sign up' : 'Sign in'}
                         </button>
                     </p>
@@ -73,7 +86,7 @@ const AuthPage: React.FC = () => {
                             <div className="w-full border-t border-neutral-300 dark:border-neutral-600" />
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">Or continue with</span>
+                            <span className="px-2 bg-white/80 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400">Or continue with</span>
                         </div>
                     </div>
                     <div className="mt-6 grid grid-cols-1 gap-3">
@@ -81,13 +94,6 @@ const AuthPage: React.FC = () => {
                             <LinkedInIcon />
                             <span className="ml-2">Verify with LinkedIn</span>
                         </button>
-                    </div>
-                     <div className="mt-4 text-center text-xs text-neutral-500 dark:text-neutral-400">
-                        <p>Simulating role-based login:</p>
-                        <div className="flex justify-center gap-2 mt-2">
-                             <button onClick={() => handleAuth(Role.STUDENT)} className="underline">As Student</button>
-                            <button onClick={() => handleAuth(Role.ALUMNI)} className="underline">As Alumni</button>
-                        </div>
                     </div>
                 </div>
             </div>

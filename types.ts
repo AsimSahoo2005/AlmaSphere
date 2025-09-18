@@ -1,3 +1,5 @@
+import { Session } from "inspector";
+
 export enum Role {
     STUDENT = 'Student',
     ALUMNI = 'Alumni',
@@ -5,12 +7,17 @@ export enum Role {
 }
 
 export interface User {
-    id: string;
+    id: string; // email serves as ID in this simulation
     name: string;
     email: string;
+    password?: string; // NOTE: For simulation only. NEVER store plaintext passwords.
     role: Role;
     avatarUrl: string;
-    university: string;
+    institution: string;
+    domain?: string;
+    skills?: string[];
+    bio?: string;
+    signupDate?: Date;
 }
 
 export interface Mentor extends User {
@@ -18,15 +25,14 @@ export interface Mentor extends User {
     title: string;
     company: string;
     companyLogoUrl: string;
-    domain: string;
     isVerified: boolean;
     isInstitutionVerified: boolean;
-    bio: string;
     sessionCredits: number;
     availability: string[];
 }
 
-export interface Session {
+// NOTE: Renamed from Session to MentorshipSession to avoid conflict with browser's Session type
+export interface MentorshipSession {
     id: string;
     mentorId: string;
     studentId: string;
@@ -47,12 +53,12 @@ export interface Feedback {
 
 export const DUMMY_MENTORS: Mentor[] = [
     {
-        id: '1',
+        id: 'jane.doe@example.com',
         name: 'Jane Doe',
         email: 'jane.doe@example.com',
         role: Role.ALUMNI,
         avatarUrl: 'https://picsum.photos/id/1027/200/200',
-        university: 'Stanford University',
+        institution: 'Stanford University',
         title: 'Senior Software Engineer',
         company: 'Google',
         companyLogoUrl: 'https://logo.clearbit.com/google.com',
@@ -62,14 +68,15 @@ export const DUMMY_MENTORS: Mentor[] = [
         bio: 'Passionate about building scalable systems and mentoring the next generation of engineers.',
         sessionCredits: 10,
         availability: ['Mon', 'Wed', 'Fri'],
+        skills: ['React', 'System Design', 'Career Growth']
     },
     {
-        id: '2',
+        id: 'john.smith@example.com',
         name: 'John Smith',
         email: 'john.smith@example.com',
         role: Role.ALUMNI,
         avatarUrl: 'https://picsum.photos/id/1005/200/200',
-        university: 'MIT',
+        institution: 'MIT',
         title: 'Product Manager',
         company: 'Microsoft',
         companyLogoUrl: 'https://logo.clearbit.com/microsoft.com',
@@ -79,48 +86,15 @@ export const DUMMY_MENTORS: Mentor[] = [
         bio: 'I help build products people love. Experienced in agile methodologies and user-centric design.',
         sessionCredits: 5,
         availability: ['Tue', 'Thu'],
-    },
-    {
-        id: '3',
-        name: 'Emily White',
-        email: 'emily.white@example.com',
-        role: Role.ALUMNI,
-        avatarUrl: 'https://picsum.photos/id/1011/200/200',
-        university: 'Harvard University',
-        title: 'Data Scientist',
-        company: 'Meta',
-        companyLogoUrl: 'https://logo.clearbit.com/meta.com',
-        domain: 'Data Science',
-        isVerified: true,
-        isInstitutionVerified: false,
-        bio: 'Turning data into actionable insights. Expertise in machine learning and statistical analysis.',
-        sessionCredits: 8,
-        availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-    },
-    {
-        id: '4',
-        name: 'Michael Brown',
-        email: 'michael.brown@example.com',
-        role: Role.ALUMNI,
-        avatarUrl: 'https://picsum.photos/id/1012/200/200',
-        university: 'UC Berkeley',
-        title: 'UX Designer',
-        company: 'Apple',
-        companyLogoUrl: 'https://logo.clearbit.com/apple.com',
-        domain: 'UX/UI Design',
-        isVerified: false,
-        isInstitutionVerified: true,
-        bio: 'Crafting intuitive and beautiful user experiences. Let\'s talk about design thinking!',
-        sessionCredits: 3,
-        availability: ['Wed', 'Fri'],
+        skills: ['Agile', 'Roadmapping', 'User Research']
     },
 ];
 
-export const DUMMY_SESSIONS: Session[] = [
+export const DUMMY_SESSIONS: MentorshipSession[] = [
     {
         id: 's1',
-        mentorId: '1',
-        studentId: '101',
+        mentorId: 'jane.doe@example.com',
+        studentId: 'alice.j@university.edu',
         mentorName: 'Jane Doe',
         studentName: 'Alice Johnson',
         status: 'booked',
@@ -130,36 +104,14 @@ export const DUMMY_SESSIONS: Session[] = [
     },
     {
         id: 's2',
-        mentorId: '2',
-        studentId: '101',
+        mentorId: 'john.smith@example.com',
+        studentId: 'alice.j@university.edu',
         mentorName: 'John Smith',
         studentName: 'Alice Johnson',
         status: 'completed',
         dateTime: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
         duration: 60,
         skillTags: ['Product Management', 'Interview Prep'],
-    },
-    {
-        id: 's3',
-        mentorId: '1',
-        studentId: '102',
-        mentorName: 'Jane Doe',
-        studentName: 'Bob Williams',
-        status: 'pending',
-        dateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000), // 4 days from now
-        duration: 15,
-        skillTags: ['Resume Review'],
-    },
-     {
-        id: 's4',
-        mentorId: '3',
-        studentId: '101',
-        mentorName: 'Emily White',
-        studentName: 'Alice Johnson',
-        status: 'completed',
-        dateTime: new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000), // 15 days ago
-        duration: 30,
-        skillTags: ['Data Science', 'Machine Learning'],
     },
 ];
 

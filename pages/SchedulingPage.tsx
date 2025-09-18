@@ -34,8 +34,8 @@ const SchedulingPage: React.FC = () => {
     });
 
     return (
-        <div className="bg-neutral-100 dark:bg-neutral-900">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="py-10">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                  <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-8">
                         <img src={mentor.avatarUrl} alt={mentor.name} className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white dark:border-neutral-700 shadow-lg"/>

@@ -9,19 +9,13 @@ import Button from './ui/Button';
 const Navbar: React.FC = () => {
     const { isAuthenticated, user, logout } = useAuth();
     const { theme, setTheme } = useTheme();
-    const navigate = ReactRouterDOM.useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-    };
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
     };
 
     return (
-        <header className="bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-sm dark:shadow-none sticky top-0 z-50 border-b border-neutral-200 dark:border-neutral-800">
+        <header className="bg-slate-100/50 dark:bg-neutral-900/50 backdrop-blur-xl shadow-sm dark:shadow-none sticky top-0 z-50 border-b border-slate-300/50 dark:border-neutral-700/50">
             <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex-shrink-0">
@@ -42,17 +36,17 @@ const Navbar: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <button onClick={toggleTheme} className="p-2 rounded-full text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <button onClick={toggleTheme} className="p-2 rounded-full text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 focus:outline-none focus:ring-2 focus:ring-primary">
                             {theme === 'light' ? <MoonIcon className="w-5 h-5"/> : <SunIcon className="w-5 h-5"/>}
                         </button>
-                        {isAuthenticated ? (
+                        {isAuthenticated && user ? (
                             <div className="flex items-center space-x-4">
                                 <ReactRouterDOM.Link to="/profile" className="flex items-center space-x-2">
-                                    <img className="h-8 w-8 rounded-full" src={user?.avatarUrl} alt={user?.name} />
-                                    <span className="text-neutral-700 dark:text-neutral-300 text-sm font-medium hidden sm:block">{user?.name}</span>
+                                    <img className="h-8 w-8 rounded-full" src={user.avatarUrl} alt={user.name || 'User avatar'} />
+                                    <span className="text-neutral-700 dark:text-neutral-300 text-sm font-medium hidden sm:block">Hi, {user.name.split(' ')[0]}</span>
                                  </ReactRouterDOM.Link>
                                 <Button
-                                    onClick={handleLogout}
+                                    onClick={logout}
                                     variant="ghost"
                                     size="sm"
                                 >

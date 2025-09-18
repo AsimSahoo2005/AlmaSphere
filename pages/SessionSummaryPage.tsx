@@ -25,8 +25,8 @@ const SessionSummaryPage: React.FC = () => {
     }
 
     return (
-        <div className="bg-neutral-100 dark:bg-neutral-900">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="py-10">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto">
                     <div className="text-center mb-8">
                         <div className="flex justify-center items-center mx-auto w-16 h-16 rounded-full bg-primary-light dark:bg-primary/20 mb-4">
