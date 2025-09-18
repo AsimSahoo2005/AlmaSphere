@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 // FIX: Using namespace import for react-router-dom to address module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
-import { DUMMY_MENTORS } from '../types';
+import { Mentor } from '../types';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 
 const SchedulingPage: React.FC = () => {
     const { mentorId } = ReactRouterDOM.useParams<{ mentorId: string }>();
     const navigate = ReactRouterDOM.useNavigate();
-    const mentor = DUMMY_MENTORS.find(m => m.id === mentorId);
+    
+    // FIX: Fetch all users from localStorage to find the correct mentor,
+    // including newly created ones, instead of relying on the static DUMMY_MENTORS array.
+    const usersJSON = localStorage.getItem('almasphere_users');
+    const allUsers: Mentor[] = usersJSON ? JSON.parse(usersJSON) : [];
+    const mentor = allUsers.find(u => u.id === mentorId);
 
     const [duration, setDuration] = useState<15 | 30 | 60>(30);
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());

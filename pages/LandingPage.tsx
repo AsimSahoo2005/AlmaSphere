@@ -4,6 +4,7 @@ import * as ReactRouterDOM from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { UsersIcon, SparklesIcon, DocumentTextIcon, ArrowRightIcon } from '../components/Icons';
+import { Role } from '../types';
 
 const features = [
     {
@@ -37,10 +38,10 @@ const LandingPage: React.FC = () => {
                         Unlock your potential with personalized micro-mentorship from your university's most valuable resource: its alumni.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <ReactRouterDOM.Link to="/login">
+                        <ReactRouterDOM.Link to="/login" state={{ isSignup: true, initialRole: Role.STUDENT }}>
                              <Button size="lg" variant="primary">Join as Student <ArrowRightIcon /></Button>
                         </ReactRouterDOM.Link>
-                         <ReactRouterDOM.Link to="/login">
+                         <ReactRouterDOM.Link to="/login" state={{ isSignup: true, initialRole: Role.ALUMNI }}>
                             <Button size="lg" variant="ghost">Join as Alumni</Button>
                         </ReactRouterDOM.Link>
                     </div>

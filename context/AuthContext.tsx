@@ -9,7 +9,7 @@ interface AuthContextType {
     loading: boolean;
     error: string | null;
     login: (email: string, password: string) => Promise<boolean>;
-    signup: (name: string, email: string, password: string) => Promise<boolean>;
+    signup: (name: string, email: string, password: string, role: Role) => Promise<boolean>;
     updateProfile: (userData: Partial<User>) => Promise<void>;
     logout: () => void;
 }
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
-    const signup = async (name: string, email: string, password: string): Promise<boolean> => {
+    const signup = async (name: string, email: string, password: string, role: Role): Promise<boolean> => {
         setError(null);
         setLoading(true);
         try {
@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 name,
                 email,
                 password, // NOTE: For simulation only. NEVER store plaintext passwords.
-                role: Role.STUDENT, // Default role
+                role,
                 avatarUrl: `https://i.pravatar.cc/150?u=${email}`,
                 institution: '',
                 signupDate: new Date(),
@@ -127,6 +127,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             saveMockUsers(users);
             // Temp session to guide user to profile setup
             sessionStorage.setItem('pending_setup_email', email);
+            sessionStorage.setItem('pending_setup_role', role);
             return true;
         } catch (e) {
             setError("An unexpected error occurred during signup.");

@@ -1,4 +1,4 @@
-import { Session } from "inspector";
+
 
 export enum Role {
     STUDENT = 'Student',
@@ -18,6 +18,9 @@ export interface User {
     skills?: string[];
     bio?: string;
     signupDate?: Date;
+    title?: string;
+    company?: string;
+    companyLogoUrl?: string;
 }
 
 export interface Mentor extends User {
@@ -29,6 +32,14 @@ export interface Mentor extends User {
     isInstitutionVerified: boolean;
     sessionCredits: number;
     availability: string[];
+}
+
+export interface ChatMessage {
+    id: string;
+    from: string;
+    to: string;
+    text: string;
+    timestamp: Date;
 }
 
 // NOTE: Renamed from Session to MentorshipSession to avoid conflict with browser's Session type
