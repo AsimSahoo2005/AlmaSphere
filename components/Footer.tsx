@@ -26,17 +26,17 @@ const Footer: React.FC = () => {
                      <div>
                         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 tracking-wider uppercase">Resources</h3>
                         <ul className="mt-4 space-y-2">
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Blog</a></li>
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Help Center</a></li>
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Community Guidelines</a></li>
+                            <li><ReactRouterDOM.Link to="/blog" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Blog</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/help" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Help Center</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/guidelines" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Community Guidelines</ReactRouterDOM.Link></li>
                         </ul>
                     </div>
                      <div>
                         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 tracking-wider uppercase">Company</h3>
                         <ul className="mt-4 space-y-2">
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">About Us</a></li>
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Careers</a></li>
-                            <li><a href="#" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Contact</a></li>
+                            <li><ReactRouterDOM.Link to="/about" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">About Us</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/careers" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Careers</ReactRouterDOM.Link></li>
+                            <li><ReactRouterDOM.Link to="/contact" className="text-base text-neutral-600 dark:text-neutral-400 hover:text-primary">Contact</ReactRouterDOM.Link></li>
                         </ul>
                     </div>
                 </div>

@@ -16,6 +16,12 @@ import ProfilePage from './pages/ProfilePage';
 import ProfileSetupPage from './pages/ProfileSetupPage';
 import AIChatWidget from './components/AIChatWidget';
 import MobileBottomNav from './components/MobileBottomNav';
+import AboutUsPage from './pages/AboutUsPage';
+import BlogPage from './pages/BlogPage';
+import CareersPage from './pages/CareersPage';
+import CommunityGuidelinesPage from './pages/CommunityGuidelinesPage';
+import ContactPage from './pages/ContactPage';
+import HelpCenterPage from './pages/HelpCenterPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -64,6 +70,14 @@ const AppContent: React.FC = () => {
                     <ReactRouterDOM.Route path="/session/:sessionId" element={<ProtectedRoute><SessionRoom /></ProtectedRoute>} />
                     <ReactRouterDOM.Route path="/summary/:sessionId" element={<ProtectedRoute><SessionSummaryPage /></ProtectedRoute>} />
                     <ReactRouterDOM.Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                    
+                    {/* Footer Pages */}
+                    <ReactRouterDOM.Route path="/about" element={<AboutUsPage />} />
+                    <ReactRouterDOM.Route path="/blog" element={<BlogPage />} />
+                    <ReactRouterDOM.Route path="/careers" element={<CareersPage />} />
+                    <ReactRouterDOM.Route path="/guidelines" element={<CommunityGuidelinesPage />} />
+                    <ReactRouterDOM.Route path="/contact" element={<ContactPage />} />
+                    <ReactRouterDOM.Route path="/help" element={<HelpCenterPage />} />
                 </ReactRouterDOM.Routes>
             </main>
             {!isAuthPage && <Footer />}
